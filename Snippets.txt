@@ -1,0 +1,41 @@
+//		mockMvc.perform(post("/employee/add").contentType(MediaType.APPLICATION_JSON)
+//						.content(objectMapper.writeValueAsString(reinRequest)))
+//				.andExpect(status().isCreated())
+//				.andExpect(jsonPath("$.name").value("Reinhart"))
+//				.andExpect(jsonPath("$.email").value(rein.getName()))
+//				.andExpect(jsonPath("$.number").value(rein.getNumber()))
+//				.andExpect(jsonPath("$.gender").value(rein.getGender()))
+//				.andExpect(jsonPath("$.age").value(rein.getAge()))
+//				.andExpect(jsonPath("$.birthday").value(rein.getBirthday()));
+
+
+
+String jsonRequest = objectMapper.writeValueAsString(reinRequest);
+		MvcResult result = mockMvc
+				.perform(post("/employee/add").content(jsonRequest).contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(status().isOk()).andReturn();
+
+		String resultContent = result.getResponse().getContentAsString();
+		Employee responseEmp = objectMapper.readValue(resultContent, Employee.class);
+		Employee checker = Employee.build(responseEmp.getId(), rein.getName(), rein.getEmail(), rein.getNumber(),
+				rein.getGender(), rein.getAge(), rein.getBirthday());
+		log.info(resultContent);
+		assertThat(responseEmp).usingRecursiveComparison().isEqualTo(checker);
+		
+		
+		//		when(employeeService.SaveEmployee(any(EmployeeRequest.class))).thenReturn(rein);
+//
+//		this.mockMvc
+//				.perform(post("/employee/add").contentType(MediaType.APPLICATION_JSON)
+//						.content(objectMapper.writeValueAsString(reinRequest)))
+//				.andExpect(status().isOk()).andExpect(jsonPath("$.name").value(reinRequest.getName()))
+//				.andExpect(jsonPath("$.email").value(reinRequest.getEmail()))
+//				.andExpect(jsonPath("$.number").value(reinRequest.getNumber()))
+//				.andExpect(jsonPath("$.gender").value(reinRequest.getGender()))
+//				.andExpect(jsonPath("$.age").value(reinRequest.getAge()));
+
+
+
+// .andExpect(jsonPath("$.birthday")
+		// .value(LocalDate.parse(reinRequest.getBirthday().toString(),
+		// formatForJson).toString()));
