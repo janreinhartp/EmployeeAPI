@@ -24,6 +24,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.janreinhartp.TestEmployeeAPI.DTO.EmployeeRequest;
@@ -159,6 +160,172 @@ class TestEmployeeApiApplicationTests {
 		});
 
 		assertThat(employeeList).isNotEmpty();
+	}
+	
+	@Test
+	@Transactional
+	void shoudTestAddException() throws JsonProcessingException, Exception {
+		LocalDate birthday = LocalDate.parse("02-10-1997", formatter);
+		EmployeeRequest exceptionRequest = EmployeeRequest.build("", "newemail@gmail.com", "09776771859", "Male", 25,
+			birthday);
+		
+		// Null Name
+		mockMvc.perform(post("/employee/add").content(objectMapper.writeValueAsString(exceptionRequest))
+				.contentType(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isBadRequest()).andReturn();
+		
+		// Name Less Than 3 Char
+		exceptionRequest.setName("aa");
+		mockMvc.perform(post("/employee/add").content(objectMapper.writeValueAsString(exceptionRequest))
+				.contentType(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isBadRequest()).andReturn();
+
+		// Name More Than 30 Char
+		exceptionRequest.setName("asdasdasdasdasdasdasdasdasdasdasd");
+		mockMvc.perform(post("/employee/add").content(objectMapper.writeValueAsString(exceptionRequest))
+				.contentType(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isBadRequest()).andReturn();
+				
+		// Name Invalid Char
+		exceptionRequest.setName("Jan Reinhart 823");
+		mockMvc.perform(post("/employee/add").content(objectMapper.writeValueAsString(exceptionRequest))
+				.contentType(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isBadRequest()).andReturn();
+				
+		// Name Whitespace Only
+		exceptionRequest.setName("    ");
+		mockMvc.perform(post("/employee/add").content(objectMapper.writeValueAsString(exceptionRequest))
+				.contentType(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isBadRequest()).andReturn();
+				
+		exceptionRequest.setName("Reinhart");
+		
+		// Number Validation 
+		exceptionRequest.setNumber("0902531");
+		mockMvc.perform(post("/employee/add").content(objectMapper.writeValueAsString(exceptionRequest))
+				.contentType(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isBadRequest()).andReturn();
+		exceptionRequest.setNumber("09367254168");
+		
+		// Gender Validation
+		exceptionRequest.setGender("femalee");
+		mockMvc.perform(post("/employee/add").content(objectMapper.writeValueAsString(exceptionRequest))
+				.contentType(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isBadRequest()).andReturn();
+		exceptionRequest.setGender("Male");
+		
+		// Age Validation
+		exceptionRequest.setAge(10);
+		mockMvc.perform(post("/employee/add").content(objectMapper.writeValueAsString(exceptionRequest))
+				.contentType(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isBadRequest()).andReturn();
+		exceptionRequest.setAge(80);
+		mockMvc.perform(post("/employee/add").content(objectMapper.writeValueAsString(exceptionRequest))
+				.contentType(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isBadRequest()).andReturn();
+		exceptionRequest.setAge(25);
+		
+		// Email Validation
+		exceptionRequest.setEmail("janreinhart*&@");
+		mockMvc.perform(post("/employee/add").content(objectMapper.writeValueAsString(exceptionRequest))
+				.contentType(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isBadRequest()).andReturn();
+		exceptionRequest.setEmail("janreinhartp@gmail.com");
+	}
+	
+	@Test
+	@Transactional
+	void shoudTestUpdateException() throws JsonProcessingException, Exception {
+		LocalDate birthday = LocalDate.parse("02-10-1997", formatter);
+		EmployeeRequest exceptionRequest = EmployeeRequest.build("Jan Reinhart", "newemail@gmail.com", "09776771859", "Male", 25,
+			birthday);
+		Employee UpdateexceptionRequest = Employee.build(0, "Jan Reinhart", "newemail@gmail.com", "09776771859", "Male", 25,
+				birthday);
+
+		// 0 ID
+		mockMvc.perform(MockMvcRequestBuilders.put("/employee/update/{id}", UpdateexceptionRequest.getId())
+				.content(objectMapper.writeValueAsString(exceptionRequest))
+				.contentType(MediaType.APPLICATION_JSON_VALUE))
+		.andExpect(status().isBadRequest()).andReturn();
+		
+		UpdateexceptionRequest.setId(1);
+		exceptionRequest.setName("");
+		// Null Name
+		mockMvc.perform(MockMvcRequestBuilders.put("/employee/update/{id}", UpdateexceptionRequest.getId())
+				.content(objectMapper.writeValueAsString(exceptionRequest))
+				.contentType(MediaType.APPLICATION_JSON_VALUE))
+		.andExpect(status().isBadRequest()).andReturn();
+		
+		// Name Less Than 3 Char
+		exceptionRequest.setName("aa");
+		mockMvc.perform(MockMvcRequestBuilders.put("/employee/update/{id}", UpdateexceptionRequest.getId())
+				.content(objectMapper.writeValueAsString(exceptionRequest))
+				.contentType(MediaType.APPLICATION_JSON_VALUE))
+		.andExpect(status().isBadRequest()).andReturn();
+
+		// Name More Than 30 Char
+		exceptionRequest.setName("asdasdasdasdasdasdasdasdasdasdasd");
+		mockMvc.perform(MockMvcRequestBuilders.put("/employee/update/{id}", UpdateexceptionRequest.getId())
+				.content(objectMapper.writeValueAsString(exceptionRequest))
+				.contentType(MediaType.APPLICATION_JSON_VALUE))
+		.andExpect(status().isBadRequest()).andReturn();
+				
+		// Name Invalid Char
+		exceptionRequest.setName("Jan Reinhart 823");
+		mockMvc.perform(MockMvcRequestBuilders.put("/employee/update/{id}", UpdateexceptionRequest.getId())
+				.content(objectMapper.writeValueAsString(exceptionRequest))
+				.contentType(MediaType.APPLICATION_JSON_VALUE))
+		.andExpect(status().isBadRequest()).andReturn();
+				
+		// Name Whitespace Only
+		exceptionRequest.setName("    ");
+		mockMvc.perform(MockMvcRequestBuilders.put("/employee/update/{id}", UpdateexceptionRequest.getId())
+				.content(objectMapper.writeValueAsString(exceptionRequest))
+				.contentType(MediaType.APPLICATION_JSON_VALUE))
+		.andExpect(status().isBadRequest()).andReturn();
+				
+		exceptionRequest.setName("Reinhart");
+		
+		// Number Validation 
+		exceptionRequest.setNumber("0902531");
+		mockMvc.perform(MockMvcRequestBuilders.put("/employee/update/{id}", UpdateexceptionRequest.getId())
+				.content(objectMapper.writeValueAsString(exceptionRequest))
+				.contentType(MediaType.APPLICATION_JSON_VALUE))
+		.andExpect(status().isBadRequest()).andReturn();
+		exceptionRequest.setNumber("09367254168");
+		
+		// Gender Validation
+		exceptionRequest.setGender("femalee");
+		mockMvc.perform(MockMvcRequestBuilders.put("/employee/update/{id}", UpdateexceptionRequest.getId())
+				.content(objectMapper.writeValueAsString(exceptionRequest))
+				.contentType(MediaType.APPLICATION_JSON_VALUE))
+		.andExpect(status().isBadRequest()).andReturn();
+		exceptionRequest.setGender("Male");
+		
+		// Age Validation
+		exceptionRequest.setAge(10);
+		mockMvc.perform(MockMvcRequestBuilders.put("/employee/update/{id}", UpdateexceptionRequest.getId())
+				.content(objectMapper.writeValueAsString(exceptionRequest))
+				.contentType(MediaType.APPLICATION_JSON_VALUE))
+		.andExpect(status().isBadRequest()).andReturn();
+		
+		exceptionRequest.setAge(80);
+		mockMvc.perform(MockMvcRequestBuilders.put("/employee/update/{id}", UpdateexceptionRequest.getId())
+				.content(objectMapper.writeValueAsString(exceptionRequest))
+				.contentType(MediaType.APPLICATION_JSON_VALUE))
+		.andExpect(status().isBadRequest()).andReturn();
+		exceptionRequest.setAge(25);
+		
+		// Email Validation
+		exceptionRequest.setEmail("janreinhart*&@");
+		mockMvc.perform(MockMvcRequestBuilders.put("/employee/update/{id}", UpdateexceptionRequest.getId())
+				.content(objectMapper.writeValueAsString(exceptionRequest))
+				.contentType(MediaType.APPLICATION_JSON_VALUE))
+		.andExpect(status().isBadRequest()).andReturn();
+		exceptionRequest.setEmail("janreinhartp@gmail.com");
+	}
+	
+	@Test
+	@Transactional
+	void shouldAllDeleteData() throws Exception {
+
+		MvcResult resultFromGet = mockMvc.perform(MockMvcRequestBuilders
+				.get("/employee/reset").contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(status().isOk()).andReturn();
+
+		String resultContentFromDelete = resultFromGet.getResponse().getContentAsString();
+
+		assertEquals(resultContentFromDelete,"All Data is Deleted");
 	}
 
 }

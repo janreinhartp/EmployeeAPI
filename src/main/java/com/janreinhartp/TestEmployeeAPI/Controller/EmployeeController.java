@@ -26,8 +26,8 @@ public class EmployeeController {
 	private EmployeeService service;
 
 	@PostMapping("/add")
-	public Employee saveEmployee(@RequestBody EmployeeRequest employeeRequest) throws EmployeeException {
-		return service.SaveEmployee(service.validateAddRequest(employeeRequest));
+	public ResponseEntity<Employee> saveEmployee(@RequestBody EmployeeRequest employeeRequest) throws EmployeeException {
+		return ResponseEntity.ok(service.SaveEmployee(service.validateAddRequest(employeeRequest)));
 	}
 
 	@GetMapping("/fetchAll")
@@ -47,18 +47,14 @@ public class EmployeeController {
 				employeeRequest.getNumber(), employeeRequest.getGender(), employeeRequest.getAge(),
 				employeeRequest.getBirthday());
 
-		// return service.updateEmployee(service.validateUpdateRequest(toUpdate));
-
 		return service.updateEmployee(service.validateUpdateRequest(toUpdate));
 	}
 
 	@DeleteMapping("/delete/{id}")
-	public String deleteEmployee(@PathVariable int id) {
-		try {
-			return service.deleteEmployee(id);
-		} catch (Exception e) {
-			return e.toString();
-		}
+	public ResponseEntity<String> deleteEmployee(@PathVariable int id) {
+	
+			return ResponseEntity.ok(service.deleteEmployee(id));
+
 	}
 
 	@GetMapping("/reset")

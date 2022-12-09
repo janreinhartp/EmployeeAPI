@@ -24,6 +24,7 @@ public class EmployeeService {
 		Employee employee = Employee.build(0, employeeRequest.getName(), employeeRequest.getEmail(),
 				employeeRequest.getNumber(), employeeRequest.getGender(), employeeRequest.getAge(),
 				employeeRequest.getBirthday());
+		
 		Employee savedEmployee = repository.save(employee);
 
 		log.info(savedEmployee.toString());
@@ -65,36 +66,36 @@ public class EmployeeService {
 			throw new EmployeeException(EmployeeException.LONG_NAME);
 		}
 		// A-Z a-z with whitespace
-		if (Pattern.matches("[a-zA-Z\\s]*", employeeRequest.getName()) != true) {
+		if (!Pattern.matches("[a-zA-Z\\s]*", employeeRequest.getName())) {
 			throw new EmployeeException(EmployeeException.INVALID_CHAR_NAME);
 		}
 		// check if only contains space
-		if (Pattern.matches("[\\s]*", employeeRequest.getName()) == true) {
+		if (Pattern.matches("[\\s]*", employeeRequest.getName())) {
 			throw new EmployeeException(EmployeeException.INVALID_CHAR_NAME);
 		}
 
 		// Number Validation
 		// Regex PH Mobile Number 0-9 and 11 Digits
 
-		if (Pattern.matches("[0-9]{11}", employeeRequest.getNumber()) != true) {
+		if (!Pattern.matches("[0-9]{11}", employeeRequest.getNumber())) {
 			throw new EmployeeException(EmployeeException.INVALID_NUMBER);
 		}
 
 		// Gender Validation
 		// Regex Male or Female
-		if (Pattern.matches("Male|Female", employeeRequest.getGender()) != true) {
+		if (!Pattern.matches("Male|Female", employeeRequest.getGender())) {
 			throw new EmployeeException(EmployeeException.INVALID_GENDER);
 		}
 
 		// Age Validation
 		// Age Must be 10 to 100
-		if (!(employeeRequest.getAge() > 10 && employeeRequest.getAge() <= 100)) {
+		if (!(employeeRequest.getAge() >= 18 && employeeRequest.getAge() <= 65)) {
 			throw new EmployeeException(EmployeeException.INVALID_AGE);
 		}
 
 		// Email Validation
 		// Regex A-Z a-z 0-9 _ . - and with @ .
-		if (Pattern.matches("^[A-Za-z0-9+_.-]+@(.+)$", employeeRequest.getEmail()) != true) {
+		if (!Pattern.matches("^[A-Za-z0-9+_.-]+@(.+)$", employeeRequest.getEmail())) {
 			throw new EmployeeException(EmployeeException.INVALID_EMAIL);
 		}
 
@@ -123,36 +124,36 @@ public class EmployeeService {
 			throw new EmployeeException(EmployeeException.LONG_NAME);
 		}
 		// A-Z a-z with whitespace
-		if (Pattern.matches("[a-zA-Z\\s]*", employeeRequestWithID.getName()) != true) {
+		if (!Pattern.matches("[a-zA-Z\\s]*", employeeRequestWithID.getName())) {
 			throw new EmployeeException(EmployeeException.INVALID_CHAR_NAME);
 		}
 		// check if only contains space
-		if (Pattern.matches("[\\s]*", employeeRequestWithID.getName()) == true) {
+		if (Pattern.matches("[\\s]*", employeeRequestWithID.getName())) {
 			throw new EmployeeException(EmployeeException.INVALID_CHAR_NAME);
 		}
 
 		// Number Validation
 		// Regex PH Mobile Number 0-9 and 11 Digits
 
-		if (Pattern.matches("[0-9]{11}", employeeRequestWithID.getNumber()) != true) {
+		if (!Pattern.matches("[0-9]{11}", employeeRequestWithID.getNumber())) {
 			throw new EmployeeException(EmployeeException.INVALID_NUMBER);
 		}
 
 		// Gender Validation
 		// Regex Male or Female
-		if (Pattern.matches("Male|Female", employeeRequestWithID.getGender()) != true) {
+		if (!Pattern.matches("Male|Female", employeeRequestWithID.getGender())) {
 			throw new EmployeeException(EmployeeException.INVALID_GENDER);
 		}
 
 		// Age Validation
 		// Age Must be 10 to 100
-		if (!(employeeRequestWithID.getAge() > 10 && employeeRequestWithID.getAge() <= 100)) {
+		if (!(employeeRequestWithID.getAge() >= 18 && employeeRequestWithID.getAge() <= 65)) {
 			throw new EmployeeException(EmployeeException.INVALID_AGE);
 		}
 
 		// Email Validation
 		// Regex A-Z a-z 0-9 _ . - and with @ .
-		if (Pattern.matches("^[A-Za-z0-9+_.-]+@(.+)$", employeeRequestWithID.getEmail()) != true) {
+		if (!Pattern.matches("^[A-Za-z0-9+_.-]+@(.+)$", employeeRequestWithID.getEmail()) ) {
 			throw new EmployeeException(EmployeeException.INVALID_EMAIL);
 		}
 

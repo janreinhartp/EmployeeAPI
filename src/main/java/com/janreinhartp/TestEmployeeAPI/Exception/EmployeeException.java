@@ -1,5 +1,9 @@
 package com.janreinhartp.TestEmployeeAPI.Exception;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(value = HttpStatus.BAD_REQUEST)
 public class EmployeeException extends Exception {
 
 	/**
@@ -13,12 +17,8 @@ public class EmployeeException extends Exception {
 	public static final String INVALID_CHAR_NAME = "ERROR : Invalid Name - Invalid Character in name";
 	public static final String INVALID_EMAIL = "ERROR : Invalid Email";
 	public static final String INVALID_NUMBER = "ERROR : Invalid Number";
-	public static final String INVALID_AGE = "ERROR : Age must be 10 to 100";
+	public static final String INVALID_AGE = "ERROR : Age must be 18 to 65";
 	public static final String INVALID_GENDER = "ERROR : Invalid Gender";
-
-	public EmployeeException() {
-
-	}
 
 	public EmployeeException(String message) {
 		super(message, null, false, false);
