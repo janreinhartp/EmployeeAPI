@@ -39,3 +39,26 @@ String jsonRequest = objectMapper.writeValueAsString(reinRequest);
 // .andExpect(jsonPath("$.birthday")
 		// .value(LocalDate.parse(reinRequest.getBirthday().toString(),
 		// formatForJson).toString()));
+		
+		
+		
+		
+		
+		@Test
+	void shouldUpdateEmployee() throws Exception {
+		LocalDate birthday = LocalDate.parse("02-10-1997", formatter);
+		
+		EmployeeRequest reinRequestUpdate =  EmployeeRequest.build("Reinhart", "janreinhartp@gmail.com", "09367254168", "Male", 25, birthday);
+		Employee employeeToUpdate = Employee.build(1, reinRequestUpdate.getName(), reinRequestUpdate.getEmail(), reinRequestUpdate.getNumber(),
+				reinRequestUpdate.getGender(), reinRequestUpdate.getAge(), reinRequestUpdate.getBirthday());
+		
+		
+		
+		when(service.updateEmployee(employeeToUpdate)).thenReturn(employeeToUpdate);
+		
+		mockMvc.perform(MockMvcRequestBuilders.put("/employee/update/{id}", bodyFromResponseFromAdd.getId())
+				.content(objectMapper.writeValueAsString(reinRequestUpdate))
+				.contentType(MediaType.APPLICATION_JSON_VALUE))
+		.andExpect(status().isOk()).andReturn();
+		
+	}

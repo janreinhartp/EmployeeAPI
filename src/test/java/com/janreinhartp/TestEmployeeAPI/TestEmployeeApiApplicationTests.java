@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -68,7 +69,7 @@ class TestEmployeeApiApplicationTests {
 	void shouldAddTheEmployee() throws Exception {
 
 		MvcResult result = mockMvc.perform(post("/employee/add").content(objectMapper.writeValueAsString(reinRequest))
-				.contentType(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isOk()).andReturn();
+				.contentType(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isCreated()).andReturn();
 		String resultContent = result.getResponse().getContentAsString();
 
 		Employee bodyFromResponse = objectMapper.readValue(resultContent, Employee.class);
@@ -83,7 +84,7 @@ class TestEmployeeApiApplicationTests {
 
 		MvcResult resultFromAdd = mockMvc.perform(post("/employee/add")
 				.content(objectMapper.writeValueAsString(reinRequest)).contentType(MediaType.APPLICATION_JSON_VALUE))
-				.andExpect(status().isOk()).andReturn();
+				.andExpect(status().isCreated()).andReturn();
 		String resultContentFromAdd = resultFromAdd.getResponse().getContentAsString();
 
 		Employee bodyFromResponseFromAdd = objectMapper.readValue(resultContentFromAdd, Employee.class);
@@ -108,7 +109,7 @@ class TestEmployeeApiApplicationTests {
 
 		MvcResult resultFromAdd = mockMvc.perform(post("/employee/add")
 				.content(objectMapper.writeValueAsString(reinRequest)).contentType(MediaType.APPLICATION_JSON_VALUE))
-				.andExpect(status().isOk()).andReturn();
+				.andExpect(status().isCreated()).andReturn();
 		String resultContentFromAdd = resultFromAdd.getResponse().getContentAsString();
 
 		Employee bodyFromResponseFromAdd = objectMapper.readValue(resultContentFromAdd, Employee.class);
@@ -130,7 +131,7 @@ class TestEmployeeApiApplicationTests {
 
 		MvcResult resultFromAdd = mockMvc.perform(post("/employee/add")
 				.content(objectMapper.writeValueAsString(reinRequest)).contentType(MediaType.APPLICATION_JSON_VALUE))
-				.andExpect(status().isOk()).andReturn();
+				.andExpect(status().isCreated()).andReturn();
 		String resultContentFromAdd = resultFromAdd.getResponse().getContentAsString();
 
 		Employee bodyFromResponseFromAdd = objectMapper.readValue(resultContentFromAdd, Employee.class);
@@ -149,7 +150,7 @@ class TestEmployeeApiApplicationTests {
 	void shouldGetAllEmployee() throws Exception {
 
 		mockMvc.perform(post("/employee/add").content(objectMapper.writeValueAsString(reinRequest))
-				.contentType(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isOk()).andReturn();
+				.contentType(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isCreated()).andReturn();
 
 		MvcResult resultFromGet = mockMvc
 				.perform(MockMvcRequestBuilders.get("/employee/fetchAll").contentType(MediaType.APPLICATION_JSON_VALUE))
