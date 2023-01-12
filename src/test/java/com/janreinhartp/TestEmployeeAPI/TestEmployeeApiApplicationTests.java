@@ -11,7 +11,6 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -90,7 +89,7 @@ class TestEmployeeApiApplicationTests {
 		Employee bodyFromResponseFromAdd = objectMapper.readValue(resultContentFromAdd, Employee.class);
 
 		MvcResult resultFromUpdate = mockMvc
-				.perform(MockMvcRequestBuilders.put("/employee/update/{id}", bodyFromResponseFromAdd.getId())
+				.perform(MockMvcRequestBuilders.put("/employee/update/{ID}", bodyFromResponseFromAdd.getId())
 						.content(objectMapper.writeValueAsString(reinRequestUpdate))
 						.contentType(MediaType.APPLICATION_JSON_VALUE))
 				.andExpect(status().isOk()).andReturn();

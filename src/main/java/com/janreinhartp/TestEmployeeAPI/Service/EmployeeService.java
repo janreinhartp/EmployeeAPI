@@ -19,10 +19,16 @@ public class EmployeeService {
 	private static final Logger log =
 			LoggerFactory.getLogger(EmployeeService.class);
 	
+	public static final int MINAGE = 18;
+	public static final int MAXAGE = 65;
+	public static final int MINCHARNAME = 2;
+	public static final int MAXCHARNAME = 30;
+	public static final int ZEROID = 0;
+	
 	@Autowired
 	private EmployeeRepository repository;
 
-	public Employee SaveEmployee(EmployeeRequest employeeRequest) {
+	public Employee saveEmployee(EmployeeRequest employeeRequest) {
 		Employee employee = Employee.build(0, employeeRequest.getName(),
 				employeeRequest.getEmail(), employeeRequest.getNumber(),
 				employeeRequest.getGender(), employeeRequest.getAge(),
@@ -34,11 +40,11 @@ public class EmployeeService {
 		return savedEmployee;
 	}
 
-	public List<Employee> GetAllEmployee() {
+	public List<Employee> getAllEmployee() {
 		return repository.findAll();
 	}
 
-	public Optional<Employee> GetEmployee(int id) {
+	public Optional<Employee> getEmployee(int id) {
 		return repository.findById(id);
 	}
 
@@ -62,11 +68,11 @@ public class EmployeeService {
 			throw new EmployeeException(EmployeeException.INVALID_NAME);
 		}
 		// More Than 3 Characters
-		if (employeeRequest.getName().length() <= 2) {
+		if (employeeRequest.getName().length() <= MINCHARNAME) {
 			throw new EmployeeException(EmployeeException.SHORT_NAME);
 		}
 		// Less Than 30 Characters
-		if (employeeRequest.getName().length() > 30) {
+		if (employeeRequest.getName().length() > MAXCHARNAME) {
 			throw new EmployeeException(EmployeeException.LONG_NAME);
 		}
 		// A-Z a-z with whitespace
@@ -93,7 +99,8 @@ public class EmployeeService {
 
 		// Age Validation
 		// Age Must be 10 to 100
-		if (!(employeeRequest.getAge() >= 18 && employeeRequest.getAge() <= 65)) {
+		if (!(employeeRequest.getAge() >= MINAGE &&
+				employeeRequest.getAge() <= MAXAGE)) {
 			throw new EmployeeException(EmployeeException.INVALID_AGE);
 		}
 
@@ -111,7 +118,7 @@ public class EmployeeService {
 
 		// Name Validation
 		// Not Empty
-		if (employeeRequestWithID.getId() == 0) {
+		if (employeeRequestWithID.getId() == ZEROID) {
 			throw new EmployeeException(EmployeeException.INVALID_NAME);
 		}
 
@@ -121,11 +128,11 @@ public class EmployeeService {
 			throw new EmployeeException(EmployeeException.INVALID_NAME);
 		}
 		// More Than 3 Characters
-		if (employeeRequestWithID.getName().length() <= 2) {
+		if (employeeRequestWithID.getName().length() <= MINCHARNAME) {
 			throw new EmployeeException(EmployeeException.SHORT_NAME);
 		}
 		// Less Than 30 Characters
-		if (employeeRequestWithID.getName().length() > 30) {
+		if (employeeRequestWithID.getName().length() > MAXCHARNAME) {
 			throw new EmployeeException(EmployeeException.LONG_NAME);
 		}
 		// A-Z a-z with whitespace
@@ -152,8 +159,8 @@ public class EmployeeService {
 
 		// Age Validation
 		// Age Must be 10 to 100
-		if (!(employeeRequestWithID.getAge() >= 18 &&
-				employeeRequestWithID.getAge() <= 65)) {
+		if (!(employeeRequestWithID.getAge() >= MINAGE &&
+				employeeRequestWithID.getAge() <= MAXAGE)) {
 			throw new EmployeeException(EmployeeException.INVALID_AGE);
 		}
 

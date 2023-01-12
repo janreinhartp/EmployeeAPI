@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.janreinhartp.TestEmployeeAPI.DTO.EmployeeRequest;
@@ -28,41 +29,39 @@ public class EmployeeController {
 
 	@PostMapping("/add")
 	public ResponseEntity<Employee> saveEmployee(
-			@RequestBody EmployeeRequest employeeRequest)
-			throws EmployeeException {
-		
-			return new ResponseEntity<>(
-			service.SaveEmployee(service.validateAddRequest(
-			employeeRequest)), HttpStatus.CREATED);
+		@RequestBody EmployeeRequest employeeRequest)
+		throws EmployeeException {
+		return new ResponseEntity<>(
+		service.saveEmployee(service.validateAddRequest(
+		employeeRequest)), HttpStatus.CREATED);
 	}
 
 	@GetMapping("/fetchAll")
 	public ResponseEntity<List<Employee>> getAllEmployee() {
-		return ResponseEntity.ok(service.GetAllEmployee());
+		return ResponseEntity.ok(service.getAllEmployee());
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Optional<Employee>> getEmployee(@PathVariable int id) {
-		return ResponseEntity.ok(service.GetEmployee(id));
+		return ResponseEntity.ok(service.getEmployee(id));
 	}
 
 	@PutMapping("/update/{ID}")
+	@ResponseBody
 	public ResponseEntity<Employee> updateEmployee(
-			@PathVariable int ID,@RequestBody EmployeeRequest employeeRequest)
-			throws EmployeeException {
-				Employee toUpdate = Employee.build(ID, employeeRequest.getName(),
-						employeeRequest.getEmail(),employeeRequest.getNumber(),
-						employeeRequest.getGender(), employeeRequest.getAge(),
-						employeeRequest.getBirthday());
-				return new ResponseEntity<Employee>(service.updateEmployee(
-						service.validateUpdateRequest(toUpdate)), HttpStatus.OK);
-			}
+	@PathVariable int ID,@RequestBody EmployeeRequest employeeRequest)
+	throws EmployeeException {
+		Employee toUpdate = Employee.build(ID, employeeRequest.getName(),
+				employeeRequest.getEmail(),employeeRequest.getNumber(),
+				employeeRequest.getGender(), employeeRequest.getAge(),
+				employeeRequest.getBirthday());
+		return new ResponseEntity<Employee>(service.updateEmployee(
+				service.validateUpdateRequest(toUpdate)), HttpStatus.OK);
+	}
 
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<String> deleteEmployee(@PathVariable int id) {
-	
-			return ResponseEntity.ok(service.deleteEmployee(id));
-
+		return ResponseEntity.ok(service.deleteEmployee(id));
 	}
 
 	@GetMapping("/reset")
