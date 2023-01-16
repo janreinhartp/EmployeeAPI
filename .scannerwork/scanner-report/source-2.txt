@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.janreinhartp.TestEmployeeAPI.DTO.EmployeeRequest;
@@ -46,10 +47,11 @@ public class EmployeeController {
 	}
 
 	@PutMapping("/update/{ID}")
+	@ResponseBody
 	public ResponseEntity<Employee> updateEmployee(
-	@PathVariable int id,@RequestBody EmployeeRequest employeeRequest)
+	@PathVariable int ID,@RequestBody EmployeeRequest employeeRequest)
 	throws EmployeeException {
-		Employee toUpdate = Employee.build(id, employeeRequest.getName(),
+		Employee toUpdate = Employee.build(ID, employeeRequest.getName(),
 				employeeRequest.getEmail(),employeeRequest.getNumber(),
 				employeeRequest.getGender(), employeeRequest.getAge(),
 				employeeRequest.getBirthday());
